@@ -128,11 +128,17 @@ public class DescifrarVentana extends AppCompatActivity {
 
     public void escribirArchivo() {
 
+        //INSTANCIO MI CLASE
+        Descifrado des = new Descifrado();
         //String nombre =pathArchivo.substring(0,pathArchivo.indexOf("."));
         String nuevo = readText(pathArchivo2);
         File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"Descifrado.txt");
         try {
             FileOutputStream fos2 = new FileOutputStream(file);
+            //SI EL NIVEL ES 1 MANDARLO A ESCRIBIR TAL Y COMO ESTÁ
+            //SI ES MAYOR A 1 MANDA A LLAMAR AL MÉTODO
+            //EL MÉTODO DEVUELVE UN STRING Y HAY QUE MANDARLE UN STRING Y UN INT
+            // VALIDAR QUE EL NIVEL QUE SE INGRESA SEA UN INT
             String escribir = "Aqui mandas lo que vas a escribir";
             fos2.write(escribir.getBytes());
             fos2.close();
