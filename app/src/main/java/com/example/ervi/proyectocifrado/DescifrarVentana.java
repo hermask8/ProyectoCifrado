@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -29,6 +30,8 @@ public class DescifrarVentana extends AppCompatActivity {
     String pathArchivo2;
     Button Buscar;
     Button Descifrar;
+    String nombre;
+    EditText etNivel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +49,7 @@ public class DescifrarVentana extends AppCompatActivity {
         }
         Buscar =(Button) findViewById(R.id.btnBuscarArchivo);
         Descifrar = (Button) findViewById(R.id.btnDescifrar);
+        etNivel =(EditText) findViewById(R.id.etNivelDescifrado);
         Buscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -57,7 +61,7 @@ public class DescifrarVentana extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-               // escribirArchivo();
+                escribirArchivo();
 
             }
         });
@@ -81,6 +85,7 @@ public class DescifrarVentana extends AppCompatActivity {
                 Toast.makeText(this, "" + path, Toast.LENGTH_SHORT).show();
                 pathArchivo2 = path;
 
+                nombre =path.substring(0,path.indexOf("."));
             /*
             ;
              pathArchivo2 = path;
@@ -130,19 +135,39 @@ public class DescifrarVentana extends AppCompatActivity {
 
         //INSTANCIO MI CLASE
         Descifrado des = new Descifrado();
-        //String nombre =pathArchivo.substring(0,pathArchivo.indexOf("."));
+        String fileName = nombre +"Descifrado.txt";
         String nuevo = readText(pathArchivo2);
-        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"Descifrado.txt");
+        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),fileName);
         try {
             FileOutputStream fos2 = new FileOutputStream(file);
             //SI EL NIVEL ES 1 MANDARLO A ESCRIBIR TAL Y COMO ESTÁ
             //SI ES MAYOR A 1 MANDA A LLAMAR AL MÉTODO
             //EL MÉTODO DEVUELVE UN STRING Y HAY QUE MANDARLE UN STRING Y UN INT
             // VALIDAR QUE EL NIVEL QUE SE INGRESA SEA UN INT
-            String escribir = "Aqui mandas lo que vas a escribir";
-            fos2.write(escribir.getBytes());
-            fos2.close();
-            Toast.makeText(this,"Guardado",Toast.LENGTH_SHORT).show();
+
+            if(etNivel.getText().toString().trim().isEmpty()){
+                Toast.makeText(this,"Llene todo el formulario",Toast.LENGTH_SHORT).show();
+            }else{
+
+                String nivel = String.valueOf(etNivel.getText());
+                int nivel2 = Integer.valueOf(nivel);
+                if (nivel2==1)
+                {
+                    String escribir = readText(pathArchivo2);
+                    fos2.write(escribir.getBytes());
+                    fos2.close();
+                    Toast.makeText(this,"Guardado",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    String escribir = des.Descifrar(nuevo,nivel2);
+                    fos2.write(escribir.getBytes());
+                    fos2.close();
+                    Toast.makeText(this,"Guardado",Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
         }
 
         catch (FileNotFoundException e) {
@@ -154,8 +179,6 @@ public class DescifrarVentana extends AppCompatActivity {
             e.printStackTrace();
             Toast.makeText(this,"ERROR Guardando",Toast.LENGTH_SHORT).show();
         }
-
-
 
     }
 }

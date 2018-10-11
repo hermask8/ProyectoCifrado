@@ -14,13 +14,15 @@
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity" />
         <activity android:name=".CifradoVentana">
+
+        </activity>
+        <activity android:name=".MenuCifrado" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MenuCifrado" />
         <activity android:name=".DescifrarVentana"></activity>
     </application>
 

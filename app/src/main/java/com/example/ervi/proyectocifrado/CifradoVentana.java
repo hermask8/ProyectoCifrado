@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -24,7 +25,9 @@ import java.io.IOException;
 public class CifradoVentana extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_STORAGE = 1000;
     private static final int READ_REQUEST_CODE = 42;
-    Button agregarArchivo;
+    String nombre;
+    String pathArchivo2;
+    Button Buscar;
     Button btnCifrar;
     EditText etTexto;
     EditText etNivel;
@@ -43,9 +46,16 @@ public class CifradoVentana extends AppCompatActivity {
                 != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1000);
         }
+        Buscar =(Button) findViewById(R.id.btnBuscarCifrado);
         btnCifrar =(Button) findViewById(R.id.btnCifrar);
-        etTexto =(EditText) findViewById(R.id.etTexto);
         etNivel =(EditText) findViewById(R.id.etNivel);
+        Buscar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                performFileSearch();
+            }
+        });
         btnCifrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -76,11 +86,12 @@ public class CifradoVentana extends AppCompatActivity {
                 path = path.substring(path.indexOf(":") + 1);
                 Toast.makeText(this,"" + path,Toast.LENGTH_SHORT).show();
 
-
+                nombre =path.substring(0,path.indexOf("."));
+                pathArchivo2 = path;
                 /*
                 pathArchivo2 = path;
                 tvPath.setText(path);
-                pathArchivo3 =path.substring(0,path.indexOf("."));
+
                 ;
                 tvBinario.setText(miArbol.getBinarioVentana());
                 tvAscii.setText(miArbol.getPasarAscii());
@@ -107,15 +118,32 @@ public class CifradoVentana extends AppCompatActivity {
     public void escribirArchivo()
     {
 
-        String fileName = "Cifrado.txt";
+        String fileName = nombre + ".cif";
         File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),fileName);
         try {
-            FileOutputStream fos2 = new FileOutputStream(file);
+            if(etNivel.getText().toString().trim().isEmpty())
+            {
+                Toast.makeText(this,"ERROR llene todo el formulario",Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                FileOutputStream fos2 = new FileOutputStream(file);
+                String numeros = String.valueOf(etNivel.getText());
+                if (numeros.equals("1"))
+                {
+                    String guardar2 = readText(pathArchivo2);
+                    fos2.write(guardar2.getBytes());
+                    fos2.close();
+                }
+                else
+                {
+                    String guardar2 = hacerCifrado();
+                    fos2.write(guardar2.getBytes());
+                    fos2.close();
+                }
+                Toast.makeText(this,"Guardado",Toast.LENGTH_SHORT).show();
+            }
 
-            String guardar2 = hacerCifrado();
-            fos2.write(guardar2.getBytes());
-            fos2.close();
-            Toast.makeText(this,"Guardado",Toast.LENGTH_SHORT).show();
         }
 
         catch (FileNotFoundException e) {
@@ -127,55 +155,61 @@ public class CifradoVentana extends AppCompatActivity {
             e.printStackTrace();
             Toast.makeText(this,"ERROR Guardando",Toast.LENGTH_SHORT).show();
         }
+        catch (Exception error)
+        {
+            Toast.makeText(this,"ERROR: " + error.getMessage(),Toast.LENGTH_SHORT).show();
 
+        }
 
 
     }
      public String hacerCifrado()
      {
-         String numeros = String.valueOf(etNivel.getText());
-         int nivel = Integer.valueOf(numeros);
-         int numCaracteres= (nivel-2)+nivel;
-         String todo = String.valueOf(etTexto.getText());
-         int numero = todo.length()%numCaracteres;
-         while(numero!=0)
+         try
          {
-             todo = todo+"%";
-             numero = todo.length()%numCaracteres;
-         }
-         Cifrado miCifrado = new Cifrado(todo,nivel);
+             String numeros = String.valueOf(etNivel.getText());
+             int nivel = Integer.valueOf(numeros);
+             int numCaracteres= (nivel-2)+nivel;
+             String todo = readText(pathArchivo2);
+             int numero = todo.length()%numCaracteres;
+             while(numero!=0)
+             {
+                 todo = todo+"%";
+                 numero = todo.length()%numCaracteres;
+             }
+             Cifrado miCifrado = new Cifrado(todo,nivel);
 
-         return miCifrado.getCadenaCifrada();
+             return miCifrado.getCadenaCifrada();
+
+
+         }
+         catch (Exception error)
+         {
+             Toast.makeText(this,"ERROR: " + error.getMessage(),Toast.LENGTH_SHORT).show();
+             return "";
+         }
+
      }
 
-     /*
+
     private String readText(String input)
     {
-        File file = new File(Environment.getExternalStorageDirectory(),input);
-        StringBuilder text = new StringBuilder();
-        try
-        {
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            String line;
-            int contador = 1;
-            while ((line=br.readLine())!=null)
-            {
+        File file = new File(Environment.getExternalStorageDirectory(), input);
+        byte[] values = new byte[(int)file.length()];
+        try {
 
-                if (contador==1)
-                    Caracteres = line;
-                else
-                    Ascii=line;
-                contador++;
-            }
-            br.close();
+            FileInputStream fileStream = new FileInputStream(file);
 
-        }
-        catch (IOException ex)
-        {
+            fileStream.read(values);
+            fileStream.close();
+            String content = new String(values,"UTF-8");
+            return  content;
+
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
 
-        return text.toString();
+        return values.toString();
     }
-    */
+
 }
