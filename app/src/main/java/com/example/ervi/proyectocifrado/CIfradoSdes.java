@@ -21,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class CIfradoSdes extends AppCompatActivity {
 
@@ -76,24 +77,23 @@ public class CIfradoSdes extends AppCompatActivity {
         File file = new File(Environment.getExternalStorageDirectory(), input);
         StringBuilder stb = new StringBuilder();
         try {
-            int c;
-            FileInputStream fileStream = new FileInputStream(file);
-            cifrarDatos.GenerarLlaves(Integer.parseInt(clave.getText().toString()));
-            while ((c = fileStream.read()) != -1) {
-                char a = (char) c;
-                stb.append(cifrarDatos.Cifrar(c));
+            if (Integer.parseInt(clave.getText().toString())>=0 && Integer.parseInt(clave.getText().toString())<=1023)
+            {
+                int c;
+                FileInputStream fileStream = new FileInputStream(file);
+                InputStreamReader Fichero = new InputStreamReader(fileStream,"UTF-8");
+                cifrarDatos.GenerarLlaves(Integer.parseInt(clave.getText().toString()));
+                while ((c = Fichero.read()) != -1) {
+                    char a = (char) c;
+                    stb.append(cifrarDatos.Cifrar(c));
+                }
+                escribirArchivo(stb.toString());
+                fileStream.close();
             }
-            escribirArchivo(stb.toString());
-            fileStream.close();
-            /*
-            FileReader entrada = new FileReader(pathArchivo);
-            int c;
-            while ((c = entrada.read()) != -1) {
-                char nuevo = ((char) c);
+            else
+            {
+                Toast.makeText(this,"La clave tiene que ser mayor a 0 y menor a 1023",Toast.LENGTH_SHORT).show();
             }
-
-            return content;
-            */
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

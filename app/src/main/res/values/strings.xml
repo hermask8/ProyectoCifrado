@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ProyectoCifrado</string>
+    <string name="UTF8">utf-8</string>
 </resources>

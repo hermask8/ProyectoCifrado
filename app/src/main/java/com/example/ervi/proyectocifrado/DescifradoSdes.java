@@ -19,6 +19,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class DescifradoSdes extends AppCompatActivity {
 
@@ -76,24 +77,23 @@ public class DescifradoSdes extends AppCompatActivity {
         File file = new File(Environment.getExternalStorageDirectory(), input);
         StringBuilder stb = new StringBuilder();
         try {
-            int c;
-            FileInputStream fileStream = new FileInputStream(file);
-            cifrarDatos.GenerarLlaves(Integer.parseInt(clave.getText().toString()));
-            while ((c = fileStream.read()) != -1) {
-                char a = (char) c;
-                stb.append(cifrarDatos.Descifrar(c));
+            if (Integer.parseInt(clave.getText().toString())>=0 && Integer.parseInt(clave.getText().toString())<=1023)
+            {
+                int c;
+                FileInputStream fileStream = new FileInputStream(file);
+                InputStreamReader Fichero = new InputStreamReader(fileStream,"UTF-8");
+                cifrarDatos.GenerarLlaves(Integer.parseInt(clave.getText().toString()));
+                while ((c = Fichero.read()) != -1) {
+                    char a = (char) c;
+                    stb.append(cifrarDatos.Descifrar(c));
+                }
+                escribirArchivo(stb.toString());
+                fileStream.close();
             }
-            escribirArchivo(stb.toString());
-            fileStream.close();
-            /*
-            FileReader entrada = new FileReader(pathArchivo);
-            int c;
-            while ((c = entrada.read()) != -1) {
-                char nuevo = ((char) c);
+            else
+            {
+                Toast.makeText(this,"La clave tiene que ser mayor a 0 y menor a 1023",Toast.LENGTH_SHORT).show();
             }
-
-            return content;
-            */
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -132,10 +132,10 @@ public class DescifradoSdes extends AppCompatActivity {
 
         String nombre =pathArchivo.substring(0,pathArchivo.indexOf("."));
 
-        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),nombre +"DEscifrado.txt");
+        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),nombre +"Descifrado.txt");
         try {
             FileOutputStream fos2 = new FileOutputStream(file);
-            String escribir = aEscribir;
+            String escribir = String.valueOf(aEscribir);
             fos2.write(escribir.getBytes());
             fos2.close();
             Toast.makeText(this,"Guardado",Toast.LENGTH_SHORT).show();
