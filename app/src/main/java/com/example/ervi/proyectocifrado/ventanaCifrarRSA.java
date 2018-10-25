@@ -116,11 +116,13 @@ public class ventanaCifrarRSA extends AppCompatActivity {
             String[] llavesArray = llaves.split(",");
             while ((c = Fichero.read()) != -1) {
                 char a = (char) c;
-                String escribirDato = miCifrado.Cifrar(String.valueOf(a),Integer.valueOf(llavesArray[0]),Integer.valueOf(llavesArray[1]));
-                mb.append(escribirDato);
-                //Escribir(escribirDato);
+                int numeros = (int) a;
+                String escribirDato = miCifrado.Cifrar(numeros,Integer.valueOf(llavesArray[0]),Integer.valueOf(llavesArray[1]));
+                //char numeros = (char)escribirDato;
+                //mb.append(escribirDato);
+                Escribir(escribirDato);
             }
-            escribirArchivo3(mb.toString());
+            //escribirArchivo3(mb.toString());
             fileStream.close();
             Toast.makeText(this,"Guardado",Toast.LENGTH_SHORT).show();
             llaves = stb.toString();

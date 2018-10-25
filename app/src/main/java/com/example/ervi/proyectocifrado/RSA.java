@@ -1,5 +1,6 @@
 package com.example.ervi.proyectocifrado;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 public class RSA {
@@ -7,25 +8,27 @@ public class RSA {
 
 
 
-    public String Cifrar(String texto,int N,int llavePublica) {
+    public String Cifrar(int texto,int N,int llavePublica) {
         String result = "";
 
-        int Char = texto.charAt(0);
-        double power = Math.pow(Char, llavePublica);
-        int ascii = (int) (power % N);
-        result = String.valueOf(Character.toChars(ascii));
+        BigInteger Char = BigInteger.valueOf(texto);
+        BigInteger n = BigInteger.valueOf(N);
+        BigInteger e = BigInteger.valueOf(llavePublica);
+        BigInteger power = Char.modPow(e,n);
+        //BigInteger ascii = new BigInteger(String.valueOf(power.doubleValue() % N));
+        result = String.valueOf(Character.toChars((int)power.longValue()));
 
         return result;
     }
 
-    public String Descifrar(String texto,int N , int LlavePrivada) {
+    public String Descifrar(int texto,int N , int LlavePrivada) {
         String result = "";
-
-        int Char = texto.charAt(0);
-        double power = Math.pow(Char, LlavePrivada);
-        int ascii = (int) power % N;
-
-        result = String.valueOf(Character.toChars(ascii));
+        BigInteger Char = BigInteger.valueOf(texto);
+        BigInteger n = BigInteger.valueOf(N);
+        BigInteger e = BigInteger.valueOf(LlavePrivada);
+        BigInteger power = Char.modPow(e,n);
+        //BigInteger ascii = new BigInteger(String.valueOf(power.doubleValue() % N));
+        result = String.valueOf(Character.toChars((int)power.longValue()));
 
         return result;
     }
