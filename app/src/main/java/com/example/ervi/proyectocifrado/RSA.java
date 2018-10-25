@@ -16,7 +16,7 @@ public class RSA {
         BigInteger e = BigInteger.valueOf(llavePublica);
         BigInteger power = Char.modPow(e,n);
         //BigInteger ascii = new BigInteger(String.valueOf(power.doubleValue() % N));
-        result = String.valueOf(Character.toChars((int)power.longValue()));
+        result = String.valueOf(Character.toChars(((int)power.longValue())));
 
         return result;
     }
@@ -25,10 +25,10 @@ public class RSA {
         String result = "";
         BigInteger Char = BigInteger.valueOf(texto);
         BigInteger n = BigInteger.valueOf(N);
-        BigInteger e = BigInteger.valueOf(LlavePrivada);
-        BigInteger power = Char.modPow(e,n);
+        BigInteger d = BigInteger.valueOf(LlavePrivada);
+        BigInteger power = Char.modPow(d,n);
         //BigInteger ascii = new BigInteger(String.valueOf(power.doubleValue() % N));
-        result = String.valueOf(Character.toChars((int)power.longValue()));
+        result = String.valueOf(Character.toChars(((int)power.longValue())));
 
         return result;
     }

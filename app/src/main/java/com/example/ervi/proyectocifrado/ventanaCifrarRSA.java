@@ -111,13 +111,13 @@ public class ventanaCifrarRSA extends AppCompatActivity {
             int c;
             StringBuilder mb = new StringBuilder();
             FileInputStream fileStream = new FileInputStream(file);
-            InputStreamReader Fichero = new InputStreamReader(fileStream);
+            InputStreamReader Fichero = new InputStreamReader(fileStream,"UTF-8");
             RSA miCifrado = new RSA();
             String[] llavesArray = llaves.split(",");
             while ((c = Fichero.read()) != -1) {
                 char a = (char) c;
                 int numeros = (int) a;
-                String escribirDato = miCifrado.Cifrar(numeros,Integer.valueOf(llavesArray[0]),Integer.valueOf(llavesArray[1]));
+                String escribirDato = miCifrado.Cifrar(numeros,Integer.valueOf(llavesArray[1]),Integer.valueOf(llavesArray[0]));
                 //char numeros = (char)escribirDato;
                 //mb.append(escribirDato);
                 Escribir(escribirDato);
