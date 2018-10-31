@@ -4,6 +4,7 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -16,6 +17,7 @@ import java.io.IOException;
 
 public class generarLlavesVentana extends AppCompatActivity {
 
+    Button miBoton;
     EditText numero1;
     EditText numero2;
     @Override
@@ -25,6 +27,7 @@ public class generarLlavesVentana extends AppCompatActivity {
 
         numero1 = (EditText) findViewById(R.id.edtPrimerNumero);
         numero2 = (EditText) findViewById(R.id.edtSegundoNumero);
+        miBoton = (Button) findViewById(R.id.btnGenerarLlaves);
     }
 
     public void Generar(View view)

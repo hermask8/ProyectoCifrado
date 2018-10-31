@@ -116,7 +116,8 @@ public class ventanaCifrarRSA extends AppCompatActivity {
             String[] llavesArray = llaves.split(",");
             while ((c = Fichero.read()) != -1) {
                 char a = (char) c;
-                String escribirDato = miCifrado.Cifrar(String.valueOf(a),Integer.valueOf(llavesArray[0]),Integer.valueOf(llavesArray[1]));
+                int escribirDato = miCifrado.Cifrar(a,Integer.valueOf(llavesArray[0]),Integer.valueOf(llavesArray[1]));
+                char nuevo3 = (char) escribirDato;
                 mb.append(escribirDato);
                 //Escribir(escribirDato);
             }

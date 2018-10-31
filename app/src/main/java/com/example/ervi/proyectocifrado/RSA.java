@@ -7,15 +7,15 @@ public class RSA {
 
 
 
-    public String Cifrar(String texto,int N,int llavePublica) {
+    public int Cifrar(char texto,int N,int llavePublica) {
         String result = "";
 
-        int Char = texto.charAt(0);
+        int Char = (int) texto;
         double power = Math.pow(Char, llavePublica);
-        int ascii = (int) (power % N);
+        int ascii = (int)(power % N);
         result = String.valueOf(Character.toChars(ascii));
 
-        return result;
+        return ascii;
     }
 
     public String Descifrar(String texto,int N , int LlavePrivada) {
