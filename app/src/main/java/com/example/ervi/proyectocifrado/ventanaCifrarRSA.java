@@ -111,17 +111,18 @@ public class ventanaCifrarRSA extends AppCompatActivity {
             int c;
             StringBuilder mb = new StringBuilder();
             FileInputStream fileStream = new FileInputStream(file);
-            InputStreamReader Fichero = new InputStreamReader(fileStream);
+            InputStreamReader Fichero = new InputStreamReader(fileStream,"UTF-8");
             RSA miCifrado = new RSA();
             String[] llavesArray = llaves.split(",");
             while ((c = Fichero.read()) != -1) {
                 char a = (char) c;
-                int escribirDato = miCifrado.Cifrar(a,Integer.valueOf(llavesArray[0]),Integer.valueOf(llavesArray[1]));
-                char nuevo3 = (char) escribirDato;
-                mb.append(escribirDato);
-                //Escribir(escribirDato);
+                int numeros = (int) a;
+                String escribirDato = miCifrado.Cifrar(numeros,Integer.valueOf(llavesArray[1]),Integer.valueOf(llavesArray[0]));
+                //char numeros = (char)escribirDato;
+                //mb.append(escribirDato);
+                Escribir(escribirDato);
             }
-            escribirArchivo3(mb.toString());
+            //escribirArchivo3(mb.toString());
             fileStream.close();
             Toast.makeText(this,"Guardado",Toast.LENGTH_SHORT).show();
             llaves = stb.toString();
@@ -150,7 +151,7 @@ public class ventanaCifrarRSA extends AppCompatActivity {
             fos2.write(escribir);
             fos2.close();
             fos.close();
-           // Toast.makeText(this,"Guardado",Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this,"Guardado",Toast.LENGTH_SHORT).show();
         }
 
         catch (FileNotFoundException e) {

@@ -98,18 +98,19 @@ public class ventanaDescifrarRSA extends AppCompatActivity {
             int c;
 
             FileInputStream fileStream = new FileInputStream(file);
-            InputStreamReader Fichero = new InputStreamReader(fileStream);
+            InputStreamReader Fichero = new InputStreamReader(fileStream,"UTF-8");
             RSA miCifrado = new RSA();
             String[] llavesArray = llaves.split(",");
             StringBuilder mb = new StringBuilder();
             while ((c = Fichero.read()) != -1) {
                 char a = (char) c;
-                String escribirDato = miCifrado.Descifrar(String.valueOf(a),Integer.valueOf(llavesArray[0]),Integer.valueOf(llavesArray[1]));
-                mb.append(escribirDato);
-                //Escribir(escribirDato);
+                int numeros = (int) c;
+                String escribirDato = miCifrado.Descifrar(numeros,Integer.valueOf(llavesArray[1]),Integer.valueOf(llavesArray[0]));
+                //mb.append(escribirDato);
+                Escribir(escribirDato);
             }
             fileStream.close();
-            escribirArchivo3(mb.toString());
+            //escribirArchivo3(mb.toString());
             Toast.makeText(this,"Guardado",Toast.LENGTH_SHORT).show();
             llaves = stb.toString();
         } catch (FileNotFoundException e) {
